@@ -7,7 +7,7 @@ export default async function handler(req, res) {
 
   const { prompt } = req.body;
   // 从 Vercel 环境变量中读取 Key，更安全
-  const apiKey = process.env.ARK_API_KEY; 
+  const export ARK_API_KEY="ark-f3bdf324-755b-459b-a6a6-1a576545bd92-920ac"; 
   // 替换为你火山引擎后台的“推理终端 ID” (以 ep- 开头)
   const modelId = "你后台的推理终端ID"; 
 
