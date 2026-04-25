@@ -694,14 +694,62 @@ async function generateWithDoubaoAPI(prompt) {
             const centerY = size;
             const radius = size - 10;
 
-            const img = new Image();
-            img.crossOrigin = 'anonymous';
-            
-            await new Promise((resolve, reject) => {
-                img.onload = resolve;
-                img.onerror = reject;
-                img.src = generatedImage;
-            });
+           async function processAndDisplay() {
+    if (!generatedImage) return;
+    const canvas = document.getElementById('umbrellaCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    const size = Math.min(window.innerWidth - 80, 320);
+    canvas.width = size * 2;
+    canvas.height = size * 2;
+    canvas.style.width = size + 'px';
+    canvas.style.height = size + 'px';
+
+    const centerX = size;
+    const centerY = size;
+    const radius = size - 10;
+
+    const img = new Image();
+    
+    // 重要：先设置跨域属性，再给 src 赋值
+    img.setAttribute('crossOrigin', 'anonymous'); 
+    
+    await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = (e) => {
+            console.error("图片加载失败，可能是跨域限制", e);
+            reject(new Error("图片加载失败"));
+        };
+        // 关键：给 URL 加一个随机后缀，强制浏览器重新抓取，绕过缓存的 CORS 限制
+        img.src = generatedImage + (generatedImage.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
+    });
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.clip(); // [cite: 133-134]
+
+    const imgSize = Math.max(img.width, img.height);
+    const scale = (radius * 2) / imgSize;
+    const drawWidth = img.width * scale;
+    const drawHeight = img.height * scale;
+    const drawX = centerX - drawWidth / 2;
+    const drawY = centerY - drawHeight / 2;
+    
+    ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight); // [cite: 135-137]
+    ctx.restore();
+
+    drawUmbrellaRibs(ctx, centerX, centerY, radius); // [cite: 138]
+
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(157, 10, 10, 0.3)';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    goToResultPage();
+}
 
             ctx.save();
             ctx.beginPath();
