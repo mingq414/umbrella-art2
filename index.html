@@ -631,8 +631,10 @@
             }, 2500);
         }
 
-        // 调用本地API代理生成图片
+               // 调用本地API代理生成图片
         async function generateWithDoubaoAPI(prompt) {
+            console.log('正在生成图片，提示词:', prompt);
+            
             let lastError = null;
             
             for (let attempt = 0; attempt < 3; attempt++) {
@@ -645,7 +647,17 @@
                         body: JSON.stringify({ prompt })
                     });
                     
-                    const data = await response.json();
+                    console.log('API响应状态:', response.status);
+                    
+                    const text = await response.text();
+                    console.log('API响应内容:', text);
+                    
+                    let data;
+                    try {
+                        data = JSON.parse(text);
+                    } catch (e) {
+                        throw new Error('API返回格式错误: ' + text.substring(0, 100));
+                    }
                     
                     if (!response.ok) {
                         throw new Error(data.error || `API错误: ${response.status}`);
@@ -654,7 +666,7 @@
                     if (data.success && data.url) {
                         return data.url;
                     } else {
-                        throw new Error('API返回数据格式错误');
+                        throw new Error(data.error || '未获取到图片URL');
                     }
                     
                 } catch (error) {
@@ -662,6 +674,7 @@
                     lastError = error;
                     
                     if (attempt < 2) {
+                        console.log('等待2秒后重试...');
                         await new Promise(resolve => setTimeout(resolve, 2000));
                     }
                 }
