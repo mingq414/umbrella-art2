@@ -1,16 +1,12 @@
 // api/generate.js
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
     const { prompt } = req.body;
-    
-    // 1. 定义 API Key（从 Vercel 环境变量读取）
-    const apiKey = process.env.ARK_API_KEY; 
-    
-    // 2. 定义推理终端 ID
-    const modelId = "ep-m-20260425235927-t6nws"; 
+    const apiKey = process.env.ARK_API_KEY;
+    const modelId = "ep-m-20260425235927-t6nws";
 
     try {
         const response = await fetch("https://ark.cn-beijing.volces.com/api/v3/images/generations", {
