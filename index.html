@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -29,26 +28,21 @@
             color: var(--text-black);
             min-height: 100vh;
             overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .container {
-            max-width: 414px;
-            margin: 0 auto;
-            min-height: 100vh;
-            position: relative;
-            background-color: var(--bg-color);
-        }
-
+        /* 页面容器管理 */
         .page {
             display: none;
-            min-height: 100vh;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
             padding: 20px;
             animation: fadeIn 0.5s ease;
         }
 
         .page.active {
-            display: flex;
-            flex-direction: column;
+            display: block;
         }
 
         @keyframes fadeIn {
@@ -56,821 +50,353 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.8; }
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes drawCircle {
-            from { stroke-dashoffset: 200; }
-            to { stroke-dashoffset: 0; }
-        }
-
         /* 首页样式 */
-        .home-page {
-            justify-content: center;
-            align-items: center;
+        .header {
             text-align: center;
+            padding: 40px 0;
         }
 
-        .logo-container {
-            width: 120px;
-            height: 120px;
-            background: linear-gradient(135deg, var(--primary-color), #C41515);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 40px;
-            box-shadow: 0 8px 32px rgba(157, 10, 10, 0.3);
-            animation: pulse 3s ease-in-out infinite;
-        }
-
-        .logo-char {
-            font-size: 56px;
-            color: var(--white);
-            font-weight: 700;
-            letter-spacing: 8px;
-        }
-
-        .main-title {
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--text-black);
-            margin-bottom: 16px;
+        .title {
+            font-size: 28px;
+            color: var(--primary-color);
             letter-spacing: 4px;
+            margin-bottom: 10px;
+            font-weight: 700;
         }
 
         .subtitle {
             font-size: 14px;
             color: var(--text-gray);
-            margin-bottom: 60px;
             letter-spacing: 2px;
         }
 
-        .start-btn {
-            width: 100%;
-            max-width: 280px;
-            padding: 16px 32px;
+        .input-section {
             background: var(--white);
-            border: 1.5px solid var(--primary-color);
-            border-radius: 30px;
-            color: var(--primary-color);
+            padding: 30px 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-top: 20px;
+        }
+
+        .input-label {
             font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .start-btn:active {
-            background: var(--primary-color);
-            color: var(--white);
-        }
-
-        /* 输入页样式 */
-        .input-page {
-            padding-top: 20px;
-        }
-
-        .back-btn {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            color: var(--primary-color);
-            font-size: 15px;
-            cursor: pointer;
-            margin-bottom: 40px;
-            padding: 8px 0;
-        }
-
-        .back-btn::before {
-            content: "←";
-            font-size: 18px;
-        }
-
-        .input-title {
-            font-size: 24px;
-            font-weight: 700;
+            margin-bottom: 15px;
+            display: block;
             color: var(--text-black);
-            margin-bottom: 12px;
+            font-weight: 500;
         }
 
-        .input-hint {
-            font-size: 14px;
-            color: var(--text-gray);
-            margin-bottom: 30px;
-        }
-
-        .input-wrapper {
-            position: relative;
-            margin-bottom: 40px;
-        }
-
-        .text-input {
+        textarea {
             width: 100%;
-            padding: 16px 20px;
-            border: 1.5px solid var(--border-gray);
+            height: 120px;
+            padding: 15px;
+            border: 1px solid var(--border-gray);
             border-radius: 12px;
-            font-size: 16px;
-            font-family: inherit;
-            background: var(--white);
-            transition: border-color 0.3s ease;
+            resize: none;
+            font-size: 15px;
+            line-height: 1.6;
+            background-color: #fafafa;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
         }
 
-        .text-input:focus {
+        textarea:focus {
             outline: none;
             border-color: var(--primary-color);
         }
 
-        .text-input::placeholder {
-            color: #B0B0B0;
-        }
-
-        .example-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 40px;
-        }
-
-        .tag {
-            padding: 8px 16px;
-            background: var(--white);
-            border: 1px solid var(--border-gray);
-            border-radius: 20px;
-            font-size: 13px;
-            color: var(--text-gray);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .tag:active {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-        }
-
-        .generate-btn {
+        .btn-generate {
             width: 100%;
             padding: 16px;
-            background: var(--primary-color);
+            background-color: var(--primary-color);
+            color: var(--white);
             border: none;
             border-radius: 12px;
-            color: var(--white);
             font-size: 16px;
             font-weight: 500;
+            letter-spacing: 2px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: auto;
+            transition: all 0.3s;
         }
 
-        .generate-btn:active {
-            transform: scale(0.98);
-            opacity: 0.9;
-        }
-
-        .generate-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        /* 生成中页面样式 */
-        .loading-page {
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        .loading-spinner {
-            width: 100px;
-            height: 100px;
-            margin-bottom: 40px;
-        }
-
-        .spinner-circle {
-            fill: none;
-            stroke: var(--primary-color);
-            stroke-width: 3;
-            stroke-linecap: round;
-            stroke-dasharray: 200;
-            stroke-dashoffset: 50;
-            animation: spin 1.5s linear infinite, drawCircle 1.5s ease-out infinite;
-            transform-origin: center;
-        }
-
-        .loading-text {
-            font-size: 20px;
-            font-weight: 500;
-            color: var(--text-black);
-            margin-bottom: 12px;
-        }
-
-        .loading-subtext {
-            font-size: 14px;
-            color: var(--text-gray);
-        }
-
-        /* 成品展示页样式 */
-        .result-page {
-            padding: 20px;
-        }
-
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .result-back-btn {
-            color: var(--text-gray);
-            font-size: 15px;
-            cursor: pointer;
-        }
-
-        .result-title {
-            font-size: 14px;
-            color: var(--primary-color);
-            font-weight: 500;
-        }
-
-        .umbrella-display {
+        /* 结果页样式 */
+        .canvas-container {
             position: relative;
             width: 100%;
-            max-width: 320px;
-            margin: 0 auto 40px;
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
         }
 
-        .umbrella-canvas {
-            width: 100%;
-            aspect-ratio: 1;
-            border-radius: 50%;
-            background: var(--white);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        canvas {
+            background: transparent;
+            max-width: 100%;
+            height: auto;
         }
 
-        .artwork-name-wrapper {
-            margin-bottom: 30px;
-        }
-
-        .artwork-label {
-            font-size: 13px;
-            color: var(--text-gray);
-            margin-bottom: 8px;
-        }
-
-        .artwork-input {
-            width: 100%;
-            padding: 14px 18px;
-            border: 1.5px solid var(--border-gray);
-            border-radius: 10px;
-            font-size: 15px;
-            font-family: inherit;
-            background: var(--white);
-            text-align: center;
-        }
-
-        .artwork-input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-        }
-
-        .action-buttons {
+        .action-group {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 40px;
+            gap: 15px;
+            margin-top: 30px;
         }
 
-        .action-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+        .btn-secondary {
             padding: 14px;
             background: var(--white);
-            border: 1.5px solid var(--primary-color);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
             border-radius: 10px;
-            color: var(--primary-color);
             font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .action-btn:active {
-            background: var(--primary-color);
-            color: var(--white);
-        }
-
-        .action-btn svg {
-            width: 18px;
-            height: 18px;
-        }
-
-        .customize-section {
-            background: var(--primary-color);
-            border-radius: 16px;
-            padding: 24px 20px;
             text-align: center;
-            margin-top: auto;
-        }
-
-        .customize-text {
-            color: var(--white);
-            font-size: 15px;
-            margin-bottom: 16px;
-            opacity: 0.9;
-        }
-
-        .customize-btn {
-            width: 100%;
-            padding: 14px;
-            background: var(--white);
-            border: none;
-            border-radius: 8px;
-            color: var(--primary-color);
-            font-size: 15px;
-            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
 
-        .customize-btn:active {
-            transform: scale(0.98);
-        }
-
-        /* Toast提示 */
-        .toast {
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: rgba(26, 26, 26, 0.9);
-            color: var(--white);
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 14px;
-            opacity: 0;
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
-
-        /* 分享模态框 */
-        .share-modal {
-            position: fixed;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%) translateY(100%);
-            width: 100%;
-            max-width: 414px;
-            background: var(--white);
-            border-radius: 20px 20px 0 0;
-            padding: 30px 20px;
-            transition: transform 0.3s ease;
-            z-index: 100;
-        }
-
-        .share-modal.show {
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .share-modal-backdrop {
+        /* 加载状态 */
+        .loading-overlay {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            right: 0;
+            bottom: 0;
+            background: rgba(245, 243, 239, 0.9);
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--primary-light);
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            color: var(--primary-color);
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
             display: none;
-            z-index: 99;
-        }
-
-        .share-modal-backdrop.show {
-            display: block;
-        }
-
-        .share-title {
-            font-size: 18px;
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .share-link-box {
-            background: var(--bg-color);
-            border-radius: 10px;
-            padding: 14px;
-            margin-bottom: 16px;
-            word-break: break-all;
-            font-size: 13px;
-            color: var(--text-gray);
-        }
-
-        .share-copy-btn {
-            width: 100%;
-            padding: 14px;
-            background: var(--primary-color);
-            border: none;
-            border-radius: 10px;
-            color: var(--white);
-            font-size: 15px;
-            font-weight: 500;
-            cursor: pointer;
+            z-index: 2000;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- 首页 -->
-        <div class="page home-page active" id="homePage">
-            <div class="logo-container">
-                <span class="logo-char">韵</span>
-            </div>
-            <h1 class="main-title">伞韵·共创</h1>
-            <p class="subtitle">——数字化非遗活态传承——</p>
-            <button class="start-btn" onclick="goToInputPage()">开启共创之旅</button>
+
+    <div id="indexPage" class="page active">
+        <div class="header">
+            <h1 class="title">伞韵·共创</h1>
+            <p class="subtitle">数字化非遗活态传承</p>
         </div>
-
-        <!-- 提示词输入页 -->
-        <div class="page input-page" id="inputPage">
-            <div class="back-btn" onclick="goToHome()">返回</div>
-            <h2 class="input-title">请输入您的创作意象</h2>
-            <p class="input-hint">用简短的词语描绘您心中的油纸伞画面</p>
-            <div class="input-wrapper">
-                <input type="text" class="text-input" id="promptInput" placeholder="烟雨江南" maxlength="50">
-            </div>
-            <div class="example-tags">
-                <span class="tag" onclick="setPrompt('烟雨江南')">烟雨江南</span>
-                <span class="tag" onclick="setPrompt('出水芙蓉')">出水芙蓉</span>
-                <span class="tag" onclick="setPrompt('梅雪争春')">梅雪争春</span>
-                <span class="tag" onclick="setPrompt('竹影清风')">竹影清风</span>
-                <span class="tag" onclick="setPrompt('云中仙鹤')">云中仙鹤</span>
-                <span class="tag" onclick="setPrompt('水墨山水')">水墨山水</span>
-            </div>
-            <button class="generate-btn" id="generateBtn" onclick="startGeneration()">唤醒灵感</button>
-        </div>
-
-        <!-- 生成中页面 -->
-        <div class="page loading-page" id="loadingPage">
-            <svg class="loading-spinner" viewBox="0 0 100 100">
-                <circle class="spinner-circle" cx="50" cy="50" r="45"/>
-            </svg>
-            <p class="loading-text">正在铺展卷轴...</p>
-            <p class="loading-subtext">正在融合匠心技艺与现代算法</p>
-        </div>
-
-        <!-- 成品展示页 -->
-        <div class="page result-page" id="resultPage">
-            <div class="result-header">
-                <span class="result-back-btn" onclick="goToInputPage()">← 重新创作</span>
-                <span class="result-title">创作完成</span>
-            </div>
-            
-            <div class="umbrella-display">
-                <canvas id="umbrellaCanvas" class="umbrella-canvas"></canvas>
-            </div>
-
-            <div class="artwork-name-wrapper">
-                <p class="artwork-label">作品名称</p>
-                <input type="text" class="artwork-input" id="artworkName" value="《烟雨江南》">
-            </div>
-
-            <div class="action-buttons">
-                <button class="action-btn" onclick="saveImage()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                        <polyline points="7 10 12 15 17 10"/>
-                        <line x1="12" y1="15" x2="12" y2="3"/>
-                    </svg>
-                    保存伞面
-                </button>
-                <button class="action-btn" onclick="shareArtwork()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="18" cy="5" r="3"/>
-                        <circle cx="6" cy="12" r="3"/>
-                        <circle cx="18" cy="19" r="3"/>
-                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-                    </svg>
-                    分享意蕴
-                </button>
-            </div>
-
-            <div class="customize-section">
-                <p class="customize-text">将灵感化作实体<br>定制属于您的油纸伞</p>
-                <button class="customize-btn" onclick="customizeUmbrella()">立即定制</button>
-            </div>
+        
+        <div class="input-section">
+            <label class="input-label">请描述您心中的油纸伞意境：</label>
+            <textarea id="promptInput" placeholder="例如：烟雨江南的青石板路，淡雅的桃花与流水..."></textarea>
+            <button class="btn-generate" onclick="handleGenerate()">唤醒灵感</button>
         </div>
     </div>
 
-    <!-- Toast提示 -->
-    <div class="toast" id="toast"></div>
-
-    <!-- 分享模态框 -->
-    <div class="share-modal-backdrop" id="shareBackdrop" onclick="closeShareModal()"></div>
-    <div class="share-modal" id="shareModal">
-        <p class="share-title">分享您的创作</p>
-        <div class="share-link-box" id="shareLinkBox">
-            伞韵·共创 - 数字化非遗活态传承<br>
-            我的油纸伞作品：<span id="shareArtworkName"></span><br>
-            创作意象：<span id="sharePrompt"></span>
+    <div id="resultPage" class="page">
+        <div class="header">
+            <h2 class="title">共创结果</h2>
+            <p class="subtitle">您的专属非遗伞面已铺展</p>
         </div>
-        <button class="share-copy-btn" onclick="copyShareContent()">复制分享内容</button>
+
+        <div class="canvas-container">
+            <canvas id="umbrellaCanvas"></canvas>
+        </div>
+
+        <div class="action-group">
+            <button class="btn-secondary" onclick="restart()">重新唤醒</button>
+            <button class="btn-generate" onclick="downloadResult()">保存作品</button>
+        </div>
     </div>
+
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <p class="loading-text" id="loadingMsg">正在铺展卷轴...</p>
+    </div>
+
+    <div id="toast" class="toast"></div>
 
     <script>
-        // 全局变量
-        let generatedImage = null;
-        let currentPrompt = '';
+        let generatedImage = '';
 
-        // 页面导航
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
-            document.getElementById(pageId).classList.add('active');
-        }
-
-        function goToHome() {
-            showPage('homePage');
-        }
-
-        function goToInputPage() {
-            showPage('inputPage');
-        }
-
-        function goToLoadingPage() {
-            showPage('loadingPage');
-        }
-
-        function goToResultPage() {
-            showPage('resultPage');
-        }
-
-        // 设置提示词
-        function setPrompt(text) {
-            document.getElementById('promptInput').value = text;
-        }
-
-        // Toast提示
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 2500);
-        }
-
-               // 调用本地API代理生成图片
-async function generateWithDoubaoAPI(prompt) {
-    const response = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt })
-    });
-
-    const data = await response.json();
-    console.log("后端返回的数据:", data); // 调试用：可以在浏览器 F12 控制台看数据结构
-
-    if (response.ok && data.success) {
-        return data.url; // 确保这里拿到的是图片地址
-    } else {
-        throw new Error(data.error || '生成失败');
-    }
-}
-
-        // 开始生成
-        async function startGeneration() {
-            const prompt = document.getElementById('promptInput').value.trim();
-            if (!prompt) {
-                showToast('请输入您的创作意象');
-                return;
-            }
-
-            currentPrompt = prompt;
-            document.getElementById('artworkName').value = `《${prompt}》`;
-            document.getElementById('generateBtn').disabled = true;
-            
-            goToLoadingPage();
-
+        // 统一接口调用
+        async function generateWithDoubaoAPI(prompt) {
             try {
-                const imageUrl = await generateWithDoubaoAPI(prompt);
-                generatedImage = imageUrl;
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: prompt })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || '后端服务异常');
+                }
+
+                const data = await response.json();
+                if (data.success && data.url) {
+                    return data.url;
+                } else {
+                    throw new Error('生成数据格式有误');
+                }
+            } catch (error) {
+                console.error("生成出错:", error);
+                throw error;
+            }
+        }
+
+        // 处理生成逻辑
+        async function handleGenerate() {
+            const prompt = document.getElementById('promptInput').value.trim();
+            if (!prompt) return showToast('请输入描述文字');
+
+            showLoading('正在绘制伞面，约需10秒...');
+            
+            try {
+                generatedImage = await generateWithDoubaoAPI(prompt);
                 await processAndDisplay();
             } catch (error) {
-                console.error('生成失败:', error);
-                showToast(`生成失败: ${error.message}`);
-                goToInputPage();
+                showToast(error.message);
+                hideLoading();
             }
-
-            document.getElementById('generateBtn').disabled = false;
         }
 
-        // 处理并显示图片
-async function processAndDisplay() {
-    if (!generatedImage) return;
-    const canvas = document.getElementById('umbrellaCanvas');
-    const ctx = canvas.getContext('2d');
-    
-    const size = Math.min(window.innerWidth - 80, 320);
-    canvas.width = size * 2;
-    canvas.height = size * 2;
-    canvas.style.width = size + 'px';
-    canvas.style.height = size + 'px';
-
-    const centerX = size;
-    const centerY = size;
-    const radius = size - 10;
-
-    const img = new Image();
-    
-    // 重要：先设置跨域属性，再给 src 赋值
-    img.setAttribute('crossOrigin', 'anonymous'); 
-    
-    await new Promise((resolve, reject) => {
-        img.onload = resolve;
-        img.onerror = (e) => {
-            console.error("图片加载失败，可能是跨域限制", e);
-            reject(new Error("图片加载失败"));
-        };
-        // 关键：给 URL 加一个随机后缀，强制浏览器重新抓取，绕过缓存的 CORS 限制
-        img.src = generatedImage + (generatedImage.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
-    });
-
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-    ctx.closePath();
-    ctx.clip(); // [cite: 133-134]
-
-    const imgSize = Math.max(img.width, img.height);
-    const scale = (radius * 2) / imgSize;
-    const drawWidth = img.width * scale;
-    const drawHeight = img.height * scale;
-    const drawX = centerX - drawWidth / 2;
-    const drawY = centerY - drawHeight / 2;
-    
-    ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight); // [cite: 135-137]
-    ctx.restore();
-
-    drawUmbrellaRibs(ctx, centerX, centerY, radius); // [cite: 138]
-
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-    ctx.strokeStyle = 'rgba(157, 10, 10, 0.3)';
-    ctx.lineWidth = 3;
-    ctx.stroke();
-
-    goToResultPage();
-}
-
-            ctx.save();
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-            ctx.closePath();
-            ctx.clip();
-
-            const imgSize = Math.max(img.width, img.height);
-            const scale = (radius * 2) / imgSize;
-            const drawWidth = img.width * scale;
-            const drawHeight = img.height * scale;
-            const drawX = centerX - drawWidth / 2;
-            const drawY = centerY - drawHeight / 2;
-
-            ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
-            ctx.restore();
-
-            drawUmbrellaRibs(ctx, centerX, centerY, radius);
-
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-            ctx.strokeStyle = 'rgba(157, 10, 10, 0.3)';
-            ctx.lineWidth = 3;
-            ctx.stroke();
-
-            goToResultPage();
-        }
-
-        // 绘制伞骨纹理
-        function drawUmbrellaRibs(ctx, centerX, centerY, radius) {
-            const ribCount = 16;
-            
-            ctx.save();
-            ctx.translate(centerX, centerY);
-
-            for (let i = 0; i < ribCount; i++) {
-                const angle = (i / ribCount) * Math.PI * 2;
-                ctx.save();
-                ctx.rotate(angle);
-                
-                ctx.beginPath();
-                ctx.moveTo(0, 0);
-                ctx.lineTo(0, -radius + 5);
-                ctx.strokeStyle = 'rgba(157, 10, 10, 0.15)';
-                ctx.lineWidth = 2;
-                ctx.stroke();
-                
-                ctx.restore();
-            }
-
-            ctx.beginPath();
-            ctx.arc(0, 0, 8, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(157, 10, 10, 0.4)';
-            ctx.fill();
-            ctx.strokeStyle = 'rgba(157, 10, 10, 0.6)';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-
-            for (let r = 0.3; r < 1; r += 0.2) {
-                ctx.beginPath();
-                ctx.arc(0, 0, radius * r, 0, Math.PI * 2);
-                ctx.strokeStyle = `rgba(157, 10, 10, ${0.08 - r * 0.05})`;
-                ctx.lineWidth = 1;
-                ctx.stroke();
-            }
-
-            ctx.restore();
-        }
-
-        // 保存图片
-        function saveImage() {
+        // 处理并显示图片到 Canvas
+        async function processAndDisplay() {
+            if (!generatedImage) return;
             const canvas = document.getElementById('umbrellaCanvas');
+            const ctx = canvas.getContext('2d');
             
+            const size = Math.min(window.innerWidth - 80, 320);
+            canvas.width = size * 2;
+            canvas.height = size * 2;
+            canvas.style.width = size + 'px';
+            canvas.style.height = size + 'px';
+
+            const centerX = size;
+            const centerY = size;
+            const radius = size - 10;
+
+            const img = new Image();
+            // 先设置跨域属性，再给 src 赋值
+            img.setAttribute('crossOrigin', 'anonymous'); 
+            
+            try {
+                await new Promise((resolve, reject) => {
+                    img.onload = resolve;
+                    img.onerror = () => reject(new Error("图片加载失败"));
+                    // 加时间戳防止浏览器缓存导致的 CORS 报错
+                    img.src = generatedImage + (generatedImage.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
+                });
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.clip();
+
+                const imgSize = Math.max(img.width, img.height);
+                const scale = (radius * 2) / imgSize;
+                const drawWidth = img.width * scale;
+                const drawHeight = img.height * scale;
+                const drawX = centerX - drawWidth / 2;
+                const drawY = centerY - drawHeight / 2;
+                
+                ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
+                ctx.restore();
+
+                // 绘制伞骨
+                drawUmbrellaRibs(ctx, centerX, centerY, radius);
+
+                // 外圈装饰
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(157, 10, 10, 0.3)';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+
+                hideLoading();
+                goToPage('resultPage');
+            } catch (e) {
+                showToast("处理图片出错，请重试");
+                hideLoading();
+            }
+        }
+
+        function drawUmbrellaRibs(ctx, x, y, r) {
+            ctx.save();
+            ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < 24; i++) {
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                const angle = (i * 15 * Math.PI) / 180;
+                ctx.lineTo(x + r * Math.cos(angle), y + r * Math.sin(angle));
+                ctx.stroke();
+            }
+            ctx.restore();
+        }
+
+        // 工具函数
+        function goToPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        function restart() {
+            generatedImage = '';
+            document.getElementById('promptInput').value = '';
+            goToPage('indexPage');
+        }
+
+        function downloadResult() {
+            const canvas = document.getElementById('umbrellaCanvas');
             const link = document.createElement('a');
-            link.download = `${document.getElementById('artworkName').value || '我的油纸伞'}.png`;
+            link.download = '伞韵共创-作品.png';
             link.href = canvas.toDataURL('image/png');
             link.click();
-            
-            showToast('图片已保存');
         }
 
-        // 分享功能
-        function shareArtwork() {
-            document.getElementById('shareArtworkName').textContent = document.getElementById('artworkName').value || '未命名作品';
-            document.getElementById('sharePrompt').textContent = currentPrompt;
-            
-            document.getElementById('shareBackdrop').classList.add('show');
-            document.getElementById('shareModal').classList.add('show');
+        function showLoading(msg) {
+            document.getElementById('loadingMsg').innerText = msg;
+            document.getElementById('loadingOverlay').style.display = 'flex';
         }
 
-        function closeShareModal() {
-            document.getElementById('shareBackdrop').classList.remove('show');
-            document.getElementById('shareModal').classList.remove('show');
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
         }
 
-        function copyShareContent() {
-            const content = `🌂 伞韵·共创 - 数字化非遗活态传承\n\n🎨 我的油纸伞作品：${document.getElementById('artworkName').value || '未命名作品'}\n💭 创作意象：${currentPrompt}\n\n✨ 油纸伞是中国传统工艺品，一把油纸伞承载着千年的文化与诗意。`;
-            
-            navigator.clipboard.writeText(content).then(() => {
-                showToast('分享内容已复制');
-                closeShareModal();
-            }).catch(() => {
-                const textarea = document.createElement('textarea');
-                textarea.value = content;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                showToast('分享内容已复制');
-                closeShareModal();
-            });
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 3000);
         }
-
-        // 定制功能
-        function customizeUmbrella() {
-            const taobaoLink = `【淘宝】7天无理由退货 https://e.tb.cn/h.iUBAi4RhbfHKC5u?tk=y2uwUyCn3Hm CZ321 「伞面定制伞双面伞防晒防雨实用油纸伞摄影古风女汉服伞舞蹈道具伞」 点击链接直接打开 或者 淘宝搜索直接打开`;
-            
-            navigator.clipboard.writeText(taobaoLink).then(() => {
-                showToast('淘宝链接已复制');
-            }).catch(() => {
-                const textarea = document.createElement('textarea');
-                textarea.value = taobaoLink;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                showToast('淘宝链接已复制');
-            });
-        }
-
-        // 回车提交
-        document.getElementById('promptInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                startGeneration();
-            }
-        });
     </script>
 </body>
 </html>
