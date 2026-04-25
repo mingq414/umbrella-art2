@@ -22,7 +22,7 @@ export default async function handler(req, res) {
             body: JSON.stringify({
                 model: modelId,
                 prompt: prompt + ", circular design, umbrella surface pattern, traditional chinese style, high quality",
-                size: "512x512",
+                size: "1024x1024",
                 n: 1
             })
         });
