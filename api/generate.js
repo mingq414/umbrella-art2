@@ -1,5 +1,4 @@
 export default async function handler(req, res) {
-  // CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -34,21 +33,22 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: 'doubao-seedream-4-0-250828',
         prompt: 'Chinese traditional oil paper umbrella design, ' + prompt + ', elegant watercolor style, circular composition',
+        sequential_image_generation: 'disabled',
+        response_format: 'url',
         size: '2K',
-        response_format: 'url'
+        stream: false,
+        watermark: false
       })
     });
 
     const data = await response.json();
 
-    // 检查API是否返回错误
     if (!response.ok || data.error) {
       const errorMsg = data.error?.message || data.error || 'API调用失败';
       console.error('API Error:', errorMsg);
       return res.status(500).json({ error: errorMsg });
     }
 
-    // 检查是否有图片URL
     if (data.data && Array.isArray(data.data) && data.data.length > 0 && data.data[0].url) {
       return res.status(200).json({ success: true, url: data.data[0].url });
     }
