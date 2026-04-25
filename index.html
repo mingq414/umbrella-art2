@@ -678,23 +678,7 @@ async function generateWithDoubaoAPI(prompt) {
         }
 
         // 处理并显示图片
-        async function processAndDisplay() {
-            if (!generatedImage) return;
-
-            const canvas = document.getElementById('umbrellaCanvas');
-            const ctx = canvas.getContext('2d');
-            
-            const size = Math.min(window.innerWidth - 80, 320);
-            canvas.width = size * 2;
-            canvas.height = size * 2;
-            canvas.style.width = size + 'px';
-            canvas.style.height = size + 'px';
-
-            const centerX = size;
-            const centerY = size;
-            const radius = size - 10;
-
-           async function processAndDisplay() {
+async function processAndDisplay() {
     if (!generatedImage) return;
     const canvas = document.getElementById('umbrellaCanvas');
     const ctx = canvas.getContext('2d');
