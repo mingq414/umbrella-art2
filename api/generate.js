@@ -1,62 +1,41 @@
+// api/generate.js
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
+  // 只允许 POST 请求
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  let prompt;
-  try {
-    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
-    prompt = body.prompt;
-  } catch (e) {
-    return res.status(400).json({ error: '请求格式错误' });
-  }
-
-  if (!prompt) {
-    return res.status(400).json({ error: '请输入提示词' });
-  }
+  const { prompt } = req.body;
+  // 从 Vercel 环境变量中读取 Key，更安全
+  const apiKey = process.env.ARK_API_KEY; 
+  // 替换为你火山引擎后台的“推理终端 ID” (以 ep- 开头)
+  const modelId = "你后台的推理终端ID"; 
 
   try {
-    const response = await fetch('https://ark.cn-beijing.volces.com/api/v3/images/generations', {
-      method: 'POST',
+    const response = await fetch("https://ark.cn-beijing.volces.com/api/v3/images/generations", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ark-f3bdf324-755b-459b-a6a6-1a576545bd92-920ac'
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: 'doubao-seedream-4-0-250828',
-        prompt: 'Chinese traditional oil paper umbrella design, ' + prompt + ', elegant watercolor style, circular composition',
-        sequential_image_generation: 'disabled',
-        response_format: 'url',
-        size: '2K',
-        stream: false,
-        watermark: false
+        model: modelId,
+        prompt: prompt + ", circular design, umbrella surface pattern, traditional chinese style, high quality",
+        size: "512x512",
+        n: 1
       })
     });
 
     const data = await response.json();
 
-    if (!response.ok || data.error) {
-      const errorMsg = data.error?.message || data.error || 'API调用失败';
-      console.error('API Error:', errorMsg);
-      return res.status(500).json({ error: errorMsg });
+    if (data.data && data.data[0]) {
+      // 返回生成的图片 URL
+      res.status(200).json({ success: true, url: data.data[0].url });
+    } else {
+      console.error("API Error Detail:", data);
+      res.status(500).json({ success: false, error: data.error?.message || "生成失败" });
     }
-
-    if (data.data && Array.isArray(data.data) && data.data.length > 0 && data.data[0].url) {
-      return res.status(200).json({ success: true, url: data.data[0].url });
-    }
-
-    return res.status(500).json({ error: '未获取到图片' });
-
   } catch (error) {
-    console.error('Server Error:', error);
-    return res.status(500).json({ error: '服务器错误: ' + (error.message || '未知错误') });
+    res.status(500).json({ success: false, error: "服务器内部错误" });
   }
 }
