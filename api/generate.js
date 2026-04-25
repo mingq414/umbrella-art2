@@ -9,6 +9,7 @@ module.exports = async function handler(req, res) {
     const modelId = "ep-m-20260425235927-t6nws";
 
     try {
+        // 第一步：调用火山引擎生成图片
         const response = await fetch("https://ark.cn-beijing.volces.com/api/v3/images/generations", {
             method: "POST",
             headers: {
@@ -25,12 +26,24 @@ module.exports = async function handler(req, res) {
 
         const data = await response.json();
 
-        if (data.data && data.data[0]) {
-            res.status(200).json({ success: true, url: data.data[0].url });
-        } else {
-            res.status(500).json({ success: false, error: data.error?.message || "生成失败" });
+        if (!data.data || !data.data[0]) {
+            return res.status(500).json({ success: false, error: data.error?.message || "生成失败" });
         }
+
+        const imageUrl = data.data[0].url;
+
+        // 第二步：服务端下载图片，转成 base64
+        const imgResponse = await fetch(imageUrl);
+        const arrayBuffer = await imgResponse.arrayBuffer();
+        const base64 = Buffer.from(arrayBuffer).toString('base64');
+        const contentType = imgResponse.headers.get('content-type') || 'image/png';
+
+        res.status(200).json({
+            success: true,
+            url: `data:${contentType};base64,${base64}`  // 返回 base64
+        });
+
     } catch (error) {
-        res.status(500).json({ success: false, error: "服务器内部错误" });
+        res.status(500).json({ success: false, error: "服务器内部错误: " + error.message });
     }
 }
