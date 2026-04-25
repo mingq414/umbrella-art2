@@ -634,8 +634,6 @@
 
                // 调用本地API代理生成图片
 async function generateWithDoubaoAPI(prompt) {
-    console.log('正在请求 Vercel 接口...', prompt);
-    
     const response = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -643,10 +641,12 @@ async function generateWithDoubaoAPI(prompt) {
     });
 
     const data = await response.json();
+    console.log("后端返回的数据:", data); // 调试用：可以在浏览器 F12 控制台看数据结构
+
     if (response.ok && data.success) {
-        return data.url;
+        return data.url; // 确保这里拿到的是图片地址
     } else {
-        throw new Error(data.error || '接口请求失败');
+        throw new Error(data.error || '生成失败');
     }
 }
 
